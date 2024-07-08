@@ -3,17 +3,19 @@ const searchBox = document.getElementById("search-box");
 const searchBtn = document.getElementById("search");
 const searchResult = document.getElementById("search-result");
 const showButton = document.getElementById("show-more-btn");
-const mySpin = document.getElementById("spin");
+const mySpin = document.querySelector(".spin");
 let Keyword ="";
 let page = 1;
 try{
     
 async function searchimages(){
     Keyword = searchBox.value;
+    mySpin.style.display ="block";
     const url = `https://api.unsplash.com/search/photos?page=${page}&query=${Keyword}&client_id=${accessKey}&per_page=12`;
     const response = await fetch(url);
+    
     const data = await response.json();
-
+    mySpin.style.display = "none";
     if(page===1){
         searchResult.innerHTML="";
     }
@@ -28,20 +30,16 @@ async function searchimages(){
         imageLink.appendChild(image);
         searchResult.appendChild(imageLink);
     })
+    
     showButton.style.display ="block";
+         
 }
 searchBtn.addEventListener("click",(e)=>{
-    const mySpin = document.getElementById("spin");
-
     e.preventDefault();
     page=1;
-    searchimages();
     mySpin.style.display ="block";
-    setTimeout(()=>{
-      mySpin.style.display ="none";
-    },2000);
-
-})
+    searchimages();
+    })
 showButton.addEventListener("click",()=>{
    page++;
    searchimages();
@@ -50,3 +48,5 @@ showButton.addEventListener("click",()=>{
 catch(error){
     console.error(error);
 }
+
+
